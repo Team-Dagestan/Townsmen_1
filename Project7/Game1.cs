@@ -9,6 +9,10 @@ namespace Project7
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+
+        Rectangle rectangle;
+        Texture2D background;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -20,14 +24,23 @@ namespace Project7
         {
             // TODO: Add your initialization logic here
 
+
             base.Initialize();
+
+            _graphics.PreferredBackBufferWidth = 840;
+            _graphics.PreferredBackBufferHeight = 1000;
+            _graphics.ApplyChanges();
+
+            rectangle = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-           
+            background = Content.Load<Texture2D>("back");
+
+            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -42,9 +55,12 @@ namespace Project7
 
         protected override void Draw(GameTime gameTime)
         {
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(background, rectangle, Color.White);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
