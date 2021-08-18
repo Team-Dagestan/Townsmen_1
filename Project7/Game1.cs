@@ -66,7 +66,7 @@ namespace Project7
             
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 Exit();
-            // TODO: Add your update logic here
+            // TODO: Add your update logic her
 
             if (gameTime.TotalGameTime.Milliseconds % 500 == 0)
                 if(wf==wf1)
