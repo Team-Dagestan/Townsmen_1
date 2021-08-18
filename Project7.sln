@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project7", "Project7\Project7.csproj", "{A4AE0710-7608-4768-89CD-DE824028D7D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project7", "Project7\Project7.csproj", "{A4AE0710-7608-4768-89CD-DE824028D7D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLL-Townsmen", "..\save\DLL-Townsmen\DLL-Townsmen.csproj", "{5722EE37-79CA-4EE6-8CA2-8A7A1286633C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A4AE0710-7608-4768-89CD-DE824028D7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4AE0710-7608-4768-89CD-DE824028D7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4AE0710-7608-4768-89CD-DE824028D7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5722EE37-79CA-4EE6-8CA2-8A7A1286633C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5722EE37-79CA-4EE6-8CA2-8A7A1286633C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5722EE37-79CA-4EE6-8CA2-8A7A1286633C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5722EE37-79CA-4EE6-8CA2-8A7A1286633C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
