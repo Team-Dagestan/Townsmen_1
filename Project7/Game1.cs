@@ -43,16 +43,18 @@ namespace Project7
     public class SpriteBuilding
     {
         public Building BuildingType;
+        public Rectangle IconRectangle;
         public Rectangle SpriteRectangle;
         public Texture2D[] Texture;
         public Texture2D[] Icon;
         public string[] IconPath;
         public string[] TexturePath;
 
-        public SpriteBuilding(Building buildingType, Rectangle spriteRectangle, Texture2D[] texture, Texture2D[] icon, string[] iconPath, string[] texturePath)
+        public SpriteBuilding(Building buildingType, Rectangle iconRectangle, Rectangle spriteRactangle, Texture2D[] texture, Texture2D[] icon, string[] iconPath, string[] texturePath)
         {
             BuildingType = buildingType;
-            SpriteRectangle = spriteRectangle;
+            IconRectangle = iconRectangle;
+            SpriteRectangle = spriteRactangle;
             Texture = texture;
             Icon = icon;
             IconPath = iconPath;
@@ -124,8 +126,6 @@ namespace Project7
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Green = Content.Load<SpriteFont>("Font/Green");
-           // Red = Content.Load<SpriteFont>("Font/DefaultFont");
             font = Content.Load<SpriteFont>("Font/DefaultFont");
             UnsafeRes = Content.Load<SpriteFont>("Font/DefaultFont");
             UnsafeGold = Content.Load<SpriteFont>("Font/DefaultFont");
@@ -175,22 +175,30 @@ namespace Project7
             for (int i = 0; i < Resourse.Count; i++)
             {
                 Resourse[i].Texture = Content.Load<Texture2D>(Resourse[i].TexturePath);
+                Resourse[i].ResourseType.count = 9999;
             }
 
-            Building.Add(new SpriteBuilding(new Sawmill(),    new Rectangle(150, 200, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/saw", "Textures/sawB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new LumberJack(), new Rectangle(300, 200, 80, 80),null, new Texture2D[] { null, null },  new string[] { "Textures/lumberjack", "Textures/lumberjackB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Forge(),      new Rectangle(450, 200, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/anvil", "Textures/anvilB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Fisher(),     new Rectangle(150, 350, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/fish", "Textures/fishB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Collector(),  new Rectangle(300, 350, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/bag", "Textures/bagB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Kitchen(),    new Rectangle(450, 350, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/kitchen", "Textures/kitchenB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Town(),       new Rectangle(150, 500, 80, 80), null, new Texture2D []{ null, null }, new string[] { "Textures/bed", "Textures/bedB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Farmer(),     new Rectangle(300, 500, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/farm", "Textures/farmB" }, new string[] { null, null, null }));
-            Building.Add(new SpriteBuilding(new Miner(),      new Rectangle(450, 500, 80, 80), null, new Texture2D[] { null, null }, new string[] { "Textures/mine", "Textures/mineB" }, new string[] { null, null, null }));
+            Building.Add(new SpriteBuilding(new Collector(),  new Rectangle(300, 350, 80, 80), new Rectangle(340, 450, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/bag", "Textures/bagB" },               new string[] { "Textures/12", "Textures/13", "Textures/14" }));
+            Building.Add(new SpriteBuilding(new Kitchen(),    new Rectangle(450, 350, 80, 80), new Rectangle(270, 340, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/kitchen", "Textures/kitchenB" },       new string[] { "Textures/6", "Textures/7", "Textures/8" }));
+            Building.Add(new SpriteBuilding(new LumberJack(), new Rectangle(300, 200, 80, 80), new Rectangle(160, 380, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/lumberjack", "Textures/lumberjackB" }, new string[] { "Textures/3", "Textures/4", "Textures/5" }));
+            Building.Add(new SpriteBuilding(new Forge(),      new Rectangle(450, 200, 80, 80), new Rectangle(380, 360, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/anvil", "Textures/anvilB" },           new string[] { "Textures/15", "Textures/16", "Textures/17" }));
+            Building.Add(new SpriteBuilding(new Miner(),      new Rectangle(450, 500, 80, 80), new Rectangle(500, 460, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/mine", "Textures/mineB" },             new string[] { "Textures/24", "Textures/25", "Textures/26" }));
+            Building.Add(new SpriteBuilding(new Sawmill(),    new Rectangle(150, 200, 80, 80), new Rectangle(395, 450, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/saw", "Textures/sawB" },               new string[] { "Textures/0", "Textures/1", "Textures/2" }));
+            Building.Add(new SpriteBuilding(new Fisher(),     new Rectangle(150, 350, 80, 80), new Rectangle(180, 500, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/fish", "Textures/fishB" },             new string[] { "Textures/9", "Textures/10", "Textures/11" }));
+            Building.Add(new SpriteBuilding(new Town(),       new Rectangle(150, 500, 80, 80), new Rectangle(320, 530, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/bed", "Textures/bedB" },               new string[] { "Textures/18", "Textures/19", "Textures/20" }));
+            Building.Add(new SpriteBuilding(new Farmer(),     new Rectangle(300, 500, 80, 80), new Rectangle(390, 590, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/farm", "Textures/farmB" },             new string[] { "Textures/21", "Textures/22", "Textures/23" }));
 
             for (int i = 0; i < Building.Count; i++)
             {
                 Building[i].Icon[0] = Content.Load<Texture2D>(Building[i].IconPath[0]);
                 Building[i].Icon[1] = Content.Load<Texture2D>(Building[i].IconPath[1]);
+
+                Building[i].Texture[0] = Content.Load<Texture2D>(Building[i].TexturePath[0]);
+                Building[i].Texture[1] = Content.Load<Texture2D>(Building[i].TexturePath[1]);
+                Building[i].Texture[2] = Content.Load<Texture2D>(Building[i].TexturePath[2]);
+
+               
+
             }
         }
 
@@ -302,15 +310,18 @@ namespace Project7
 
                 for (int i = 0; i < Building.Count; i++)
                 {
-                    if (Building[i].SpriteRectangle.Contains(Mouse.GetState().Position))
+                    if (Building[i].IconRectangle.Contains(Mouse.GetState().Position))
                     {
-                        ButtonSelected = true;
-                        Selection2.SpriteRectangle = new Rectangle(Building[i].SpriteRectangle.X - 5, Building[i].SpriteRectangle.Y - 5, 90, 90);
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                        {
-                            SelectedBuildingID = i;
-                            BuildingClick();
-                        }
+                        //if (Building[i].BuildingType.currentLevel != 2)
+                        //{
+                            ButtonSelected = true;
+                            Selection2.SpriteRectangle = new Rectangle(Building[i].IconRectangle.X - 5, Building[i].IconRectangle.Y - 5, 90, 90);
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                            {
+                                SelectedBuildingID = i;
+                                BuildingClick();
+                            }
+                        //}
                     }
                 }
             }
@@ -374,22 +385,25 @@ namespace Project7
                 int count = 0;
                 for (int i = 0; i < Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].Count; i++)
                 {
-
-
                     if (Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count >= Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value)
                         count++;
-
                 }
                 if (count == Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].Count)
                 {
                     for (int i = 0; i < Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].Count; i++)
                     {
                         Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count = Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count - Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value;
-
                     }
-                    GlobalStatus = 1;
+                    if (Building[SelectedBuildingID].BuildingType.isPlaced == false)
+                        Building[SelectedBuildingID].BuildingType.isPlaced = true;
+                    else
+                        if(Building[SelectedBuildingID].BuildingType.currentLevel!=2)
                     Building[SelectedBuildingID].BuildingType.currentLevel++;
+
+                    GlobalStatus = 1;
                 }
+
+                
             }
             ButtonSelected = false;
         }
@@ -469,6 +483,12 @@ namespace Project7
 
                 _spriteBatch.DrawString(font, $"Day  {CurrentDay}", new Vector2(3, 3), Color.Black);
                 _spriteBatch.DrawString(font, $"Day  {CurrentDay}", Vector2.Zero, Color.White);
+
+                for (int i = 0; i < Building.Count; i++)
+                {
+                    if(Building[i].BuildingType.isPlaced == true)
+                    _spriteBatch.Draw(Building[i].Texture[Building[i].BuildingType.currentLevel], new Vector2(Building[i].SpriteRectangle.X, Building[i].SpriteRectangle.Y), Color.White);
+                }
             }
             else
                 _spriteBatch.Draw(Background.Texture, new Vector2(Background.SpriteRectangle.X, Background.SpriteRectangle.Y), Color.Black);
@@ -508,7 +528,7 @@ namespace Project7
                     _spriteBatch.Draw(Selection2.Texture, new Vector2(Selection2.SpriteRectangle.X, Selection2.SpriteRectangle.Y), Color.White);
                 for (int i = 0; i < Building.Count; i++)
                 {
-                    _spriteBatch.Draw(Building[i].Icon[0], new Vector2(Building[i].SpriteRectangle.X, Building[i].SpriteRectangle.Y), Color.White);
+                    _spriteBatch.Draw(Building[i].Icon[0], new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y), Color.White);
                     
                 }
             }
@@ -518,38 +538,48 @@ namespace Project7
                 _spriteBatch.Draw(No.Texture, new Vector2(No.SpriteRectangle.X, No.SpriteRectangle.Y), Color.White);
                 _spriteBatch.Draw(Yes.Texture, new Vector2(Yes.SpriteRectangle.X, Yes.SpriteRectangle.Y), Color.White);
 
-                if(Building[SelectedBuildingID].BuildingType.currentLevel == 0)
+                if(Building[SelectedBuildingID].BuildingType.currentLevel == 0 && Building[SelectedBuildingID].BuildingType.isPlaced == false)
                 {
                     _spriteBatch.Draw(Selection2.Texture, new Vector2(195,195), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[1], new Vector2(200, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[1], new Vector2(300, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[1], new Vector2(400, 200), Color.White);
                 }
-                else if (Building[SelectedBuildingID].BuildingType.currentLevel == 1)
+                else if (Building[SelectedBuildingID].BuildingType.currentLevel == 0)
                 {
                     _spriteBatch.Draw(Selection2.Texture, new Vector2(295, 195), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(200, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[1], new Vector2(300, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[1], new Vector2(400, 200), Color.White);
                 }
-                else if (Building[SelectedBuildingID].BuildingType.currentLevel == 2)
+                else if (Building[SelectedBuildingID].BuildingType.currentLevel == 1)
                 {
                     _spriteBatch.Draw(Selection2.Texture, new Vector2(395, 195), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(200, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(300, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[1], new Vector2(400, 200), Color.White);
                 }
-
-                for (int i = 0; i < Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].Count; i++)
+                else if (Building[SelectedBuildingID].BuildingType.currentLevel == 2)
                 {
-                   _spriteBatch.Draw(Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].Texture , new Vector2(200 , 300 + i * 100), Color.White);
+                    _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(200, 200), Color.White);
+                    _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(300, 200), Color.White);
+                    _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(400, 200), Color.White);
 
-                    _spriteBatch.DrawString(font,$"{Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count}" +
-                        $"/{Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value}  ", new Vector2(320, 300+i*100), 
-                        Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count >= Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value ? Color.Green:Color.Red);
-
+                    _spriteBatch.DrawString(font, "Maxed out!", new Vector2(160, 320), Color.White);
                 }
 
+                if (Building[SelectedBuildingID].BuildingType.currentLevel != 2)
+                {
+                    for (int i = 0; i < Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].Count; i++)
+                    {
+                        _spriteBatch.Draw(Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].Texture, new Vector2(200, 300 + i * 100), Color.White);
+
+                        _spriteBatch.DrawString(font, $"{Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count}" +
+                            $"/{Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value}  ", new Vector2(320, 300 + i * 100),
+                            Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count >= Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value ? Color.Green : Color.Red);
+
+                    }
+                }
             }
 
 
