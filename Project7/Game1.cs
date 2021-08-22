@@ -61,6 +61,25 @@ namespace Project7
             TexturePath = texturePath;
         }
     }
+
+    public class SpriteVillager
+    {
+        public Rectangle SpriteRectangle;
+        public int AnimationFrame;
+        public Texture2D[] Texture;
+        public string[] TexturePath;
+        public Villager VillagerType;
+        public Point DestinationPoint;
+
+        public SpriteVillager(Villager villagerType, Rectangle spriteRectangle, int animationFrame, Texture2D[] texture, string[] texturePath)
+        {
+            VillagerType = villagerType;
+            SpriteRectangle = spriteRectangle;
+            AnimationFrame = animationFrame;
+            Texture = texture;
+            TexturePath = texturePath;
+        }
+    }
     
     public class Game1 : Game
     {
@@ -73,6 +92,8 @@ namespace Project7
         List<SpriteResourse> Resourse = new List<SpriteResourse>();
        
         List<SpriteBuilding> Building = new List<SpriteBuilding>();
+
+        List<SpriteVillager> Villager = new List<SpriteVillager>();
         
         Texture2D wf;
         Texture2D wf1;
@@ -198,20 +219,119 @@ namespace Project7
 
             }
 
-           // Building[7].BuildingType.maxVillagers = 30;
-            Building[7].BuildingType.currentVillagers = 5;
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X+60, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 60, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 60, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.COLLECTORHOUSE), new Rectangle(Building[0].SpriteRectangle.X + 60, Building[0].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+           
 
-            //Building[0].BuildingType.maxVillagers = 5;
-            Building[0].BuildingType.currentVillagers =2;
+
+            for (int i = 0; i < Villager.Count; i++)
+            {
+                for (int j = 0; j < testV.Length; j++)
+                {
+                    Villager[i].Texture[j] = Content.Load<Texture2D>(Villager[i].TexturePath[j]);
+                }
+                Villager[i].DestinationPoint.X = Villager[i].SpriteRectangle.X;
+                Villager[i].DestinationPoint.Y = Villager[i].SpriteRectangle.Y;
+            }
+
+            
+           
         }
 
+        Texture2D[] testV = new Texture2D[] { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
+        string[] testT = new string[] { "Textures/Animations/1", "Textures/Animations/2", "Textures/Animations/3", "Textures/Animations/4", "Textures/Animations/5",
+        "Textures/Animations/6","Textures/Animations/7","Textures/Animations/8","Textures/Animations/9","Textures/Animations/10","Textures/Animations/11","Textures/Animations/12",
+        "Textures/Animations/13","Textures/Animations/14","Textures/Animations/15","Textures/Animations/16","Textures/Animations/44","Textures/Animations/47","Textures/Animations/49.1","Textures/Animations/49.2"};
 
-        
+        public void VillagersChangeBuilding()
+        {
+           
+            for (int i = 0; i < Building.Count; i++)
+            {
+                int count = 0;
+                for (int j = 0; j < Villager.Count; j++)
+                {
 
+                    if (Building[i].BuildingType.buildingType == Villager[j].VillagerType.WorkPlace)
+                        count++;
+                }
+                        Building[i].BuildingType.currentVillagers=count;
+            }
+        }
+
+        public void GetVillagerFrameList(int n)
+        {
+            if (Villager[n].DestinationPoint.X > Villager[n].SpriteRectangle.X)
+                FrameList[n] = new int[] { 0, 1, 2, 3 };
+            else
+                FrameList[n] = new int[] { 4, 5, 6, 7 };
+
+            if (Villager[n].DestinationPoint.Y < Villager[n].SpriteRectangle.Y)
+                FrameList[n] = new int[] {FrameList.ElementAt(n)[0] + 8, FrameList.ElementAt(n)[1] + 8, FrameList.ElementAt(n)[2] + 8, FrameList.ElementAt(n)[3] + 8 };
+            
+         
+        }
+        public void Walk(GameTime gameTime, int n)////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        {
+            if (gameTime.TotalGameTime.Milliseconds % 200 == 0)
+            {
+                if (Villager[n].SpriteRectangle.X != Villager[n].DestinationPoint.X || Villager[n].SpriteRectangle.Y != Villager[n].DestinationPoint.Y)
+                {
+                    if(Villager[n].SpriteRectangle.X != Villager[n].DestinationPoint.X)
+                    {
+                        if(Villager[n].SpriteRectangle.X > Villager[n].DestinationPoint.X)
+                            Villager[n].SpriteRectangle.X -= VillagerStep;
+                        else
+                            Villager[n].SpriteRectangle.X += VillagerStep;
+                    }
+
+
+                    if (Villager[n].SpriteRectangle.Y != Villager[n].DestinationPoint.Y)
+                    {
+                        if (Villager[n].SpriteRectangle.Y > Villager[n].DestinationPoint.Y)
+                            Villager[n].SpriteRectangle.Y -= VillagerStep;
+                        else
+                            Villager[n].SpriteRectangle.Y += VillagerStep;
+                    }
+
+                    Villager[n].AnimationFrame = FrameList.ElementAt(n)[tessst[n]];
+                    if (tessst[n] == 3)
+                        tessst[n] = 0;
+                    else
+                        tessst[n]++;
+                }
+                else
+                {
+                    Villager[n].VillagerType.IsVisible = false;
+                }
+            }
+        }
+        List<int> tessst = new List<int>() { 0, 0, 0, 0 };
+        int VillagerStep = 5;
+
+        List<int[]> FrameList = new List<int[]>
+        {
+            new int[] { 1, 2, 3, 4 },
+            new int[] { 1, 2, 3, 4 },
+            new int[] { 1, 2, 3, 4 },
+            new int[] { 1, 2, 3, 4 },
+            new int[] { 1, 2, 3, 4 },
+            new int[] { 1, 2, 3, 4 },
+            new int[] { 1, 2, 3, 4 }
+        };
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            for (int i = 0; i < Villager.Count; i++)
+            {
+               Walk(gameTime,i);
+            }
+
+            VillagersChangeBuilding();
 
             Cheats();
 
@@ -427,7 +547,8 @@ namespace Project7
             GlobalStatus = 10;
             ButtonSelected = false;
         }
-        private void UpButtonClick(int test2)
+      
+        private void UpButtonClick(int test2)/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         {
             if (GlobalStatus == 30)
             {
@@ -441,8 +562,18 @@ namespace Project7
             {
                 if (Building[7].BuildingType.currentVillagers > 0 && Building[test2].BuildingType.currentVillagers < Building[test2].BuildingType.maxVillagers[Building[test2].BuildingType.currentLevel])
                 {
-                    Building[test2].BuildingType.currentVillagers++;
-                    Building[7].BuildingType.currentVillagers--;
+                    for (int i = 0; i < Villager.Count; i++)
+                    {
+                        if (Villager[i].VillagerType.WorkPlace == BuildingType.TOWNHALL)
+                        {
+                            Villager[i].VillagerType.WorkPlace = Building[test2].BuildingType.buildingType;
+                            Villager[i].DestinationPoint = new Point(Building[test2].SpriteRectangle.X+20,Building[test2].SpriteRectangle.Y + 20);
+                            Villager[i].VillagerType.IsVisible = true;
+                            GetVillagerFrameList(i);
+
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -460,8 +591,17 @@ namespace Project7
             {
                 if(Building[test2].BuildingType.currentVillagers > 0 && Building[7].BuildingType.currentVillagers <  Building[7].BuildingType.maxVillagers[Building[7].BuildingType.currentLevel])
                 {
-                    Building[test2].BuildingType.currentVillagers--;
-                    Building[7].BuildingType.currentVillagers++;
+                    for (int i = 0; i < Villager.Count; i++)
+                    {
+                        if (Villager[i].VillagerType.WorkPlace == Building[test2].BuildingType.buildingType)
+                        {
+                            Villager[i].VillagerType.WorkPlace = BuildingType.TOWNHALL;
+                            Villager[i].DestinationPoint = new Point(Building[7].SpriteRectangle.X + 20, Building[7].SpriteRectangle.Y + 20);
+                            Villager[i].VillagerType.IsVisible = true;
+                            GetVillagerFrameList(i);
+                            break;
+                        }
+                    }
                 }
 
             }
@@ -588,6 +728,13 @@ namespace Project7
                     if(Building[i].BuildingType.isPlaced == true)
                     _spriteBatch.Draw(Building[i].Texture[Building[i].BuildingType.currentLevel], new Vector2(Building[i].SpriteRectangle.X, Building[i].SpriteRectangle.Y), Color.White);
                 }
+
+                for (int i = 0; i < Villager.Count; i++)
+                {
+                    if (Villager[i].VillagerType.IsVisible == true)
+                        _spriteBatch.Draw(Villager[i].Texture[Villager[i].AnimationFrame], new Vector2(Villager[i].SpriteRectangle.X, Villager[i].SpriteRectangle.Y), Color.White);
+                }
+                
             }
             else
                 _spriteBatch.Draw(Background.Texture, new Vector2(Background.SpriteRectangle.X, Background.SpriteRectangle.Y), Color.Black);
