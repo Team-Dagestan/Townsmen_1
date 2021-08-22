@@ -198,10 +198,10 @@ namespace Project7
 
             }
 
-            Building[7].BuildingType.maxVillagers = 30;
+           // Building[7].BuildingType.maxVillagers = 30;
             Building[7].BuildingType.currentVillagers = 5;
 
-            Building[0].BuildingType.maxVillagers = 5;
+            //Building[0].BuildingType.maxVillagers = 5;
             Building[0].BuildingType.currentVillagers =2;
         }
 
@@ -439,7 +439,7 @@ namespace Project7
             }
             else
             {
-                if (Building[7].BuildingType.currentVillagers > 0 && Building[test2].BuildingType.currentVillagers < Building[test2].BuildingType.maxVillagers)
+                if (Building[7].BuildingType.currentVillagers > 0 && Building[test2].BuildingType.currentVillagers < Building[test2].BuildingType.maxVillagers[Building[test2].BuildingType.currentLevel])
                 {
                     Building[test2].BuildingType.currentVillagers++;
                     Building[7].BuildingType.currentVillagers--;
@@ -458,7 +458,7 @@ namespace Project7
             }
             else
             {
-                if(Building[test2].BuildingType.currentVillagers > 0 && Building[7].BuildingType.currentVillagers < Building[7].BuildingType.maxVillagers)
+                if(Building[test2].BuildingType.currentVillagers > 0 && Building[7].BuildingType.currentVillagers <  Building[7].BuildingType.maxVillagers[Building[7].BuildingType.currentLevel])
                 {
                     Building[test2].BuildingType.currentVillagers--;
                     Building[7].BuildingType.currentVillagers++;
@@ -512,7 +512,10 @@ namespace Project7
             else if (GlobalStatus == 1)
                 GlobalStatus = 0;
             else if (GlobalStatus == 2)
+            {
                 GlobalStatus = 0;
+                ButtonPressed = false;
+            }
 
             ButtonSelected = false;
         }
@@ -696,7 +699,7 @@ namespace Project7
                 for (int i = 0; i < Building.Count; i++)
                 {
                     _spriteBatch.Draw(Building[i].BuildingType.isPlaced == true?Building[i].Icon[0]: Building[i].Icon[1], new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y), Color.White);
-                    _spriteBatch.DrawString(fontS, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y+90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
+                    _spriteBatch.DrawString(fontS, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers[Building[i].BuildingType.currentLevel]}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y+90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
                 }
             }
 
