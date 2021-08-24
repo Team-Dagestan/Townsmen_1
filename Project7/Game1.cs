@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using DLL_Townsmen;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Project7
 {
@@ -134,6 +135,20 @@ namespace Project7
         Sprite RodB;
         Sprite Rod;
 
+        Sprite Wood;
+        Sprite Fish;
+        Sprite Food;
+        Sprite Stone;
+        Sprite IronOre;
+
+        Random rnd = new Random();
+
+        bool DrawIconWood=false;
+        bool DrawIconFish = false;
+        bool DrawIconFood=false;
+        bool DrawIconStone=false;
+        bool DrawIconIronOre=false;
+
         int IntUnsafeRes;
         int IntUnsafeGold;
 
@@ -165,7 +180,12 @@ namespace Project7
             UnsafeRes = Content.Load<SpriteFont>("Font/DefaultFont");
             UnsafeGold = Content.Load<SpriteFont>("Font/DefaultFont");
 
-            
+            IronOre = new Sprite(new Rectangle(140, 565, 36, 48), null, "Textures/41.1");
+            Fish = new Sprite(new Rectangle(140, 565, 36, 48), null, "Textures/41.2");
+            Food = new Sprite(new Rectangle(140, 565, 36, 48), null, "Textures/41.3");
+            Stone = new Sprite(new Rectangle(140, 565, 36, 48), null, "Textures/41.4");
+            Wood = new Sprite(new Rectangle(140, 565, 36, 48), null, "Textures/41.5");
+
             RodA = new Sprite(new Rectangle(140, 565, 28, 32), null, "Textures/Animations/48.1");
             RodB = new Sprite(new Rectangle(140, 565, 28, 32), null, "Textures/Animations/48.2");
             Up = new Sprite(new Rectangle(350, 370, 28, 32), null, "Textures/34");
@@ -182,6 +202,11 @@ namespace Project7
             wf1 = Content.Load<Texture2D>("Textures/Animations/46.1");
             wf2 = Content.Load<Texture2D>("Textures/Animations/46.2");
 
+            IronOre.Texture = Content.Load<Texture2D>(IronOre.TexturePath);
+            Fish.Texture = Content.Load<Texture2D>(Fish.TexturePath);
+            Food.Texture = Content.Load<Texture2D>(Food.TexturePath);
+            Stone.Texture = Content.Load<Texture2D>(Stone.TexturePath);
+            Wood.Texture = Content.Load<Texture2D>(Wood.TexturePath);
 
             RodA.Texture = Content.Load<Texture2D>(RodA.TexturePath);
             RodB.Texture = Content.Load<Texture2D>(RodB.TexturePath);
@@ -232,9 +257,6 @@ namespace Project7
                 Building[i].Texture[0] = Content.Load<Texture2D>(Building[i].TexturePath[0]);
                 Building[i].Texture[1] = Content.Load<Texture2D>(Building[i].TexturePath[1]);
                 Building[i].Texture[2] = Content.Load<Texture2D>(Building[i].TexturePath[2]);
-
-               
-
             }
 
             Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X+100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
@@ -296,6 +318,11 @@ namespace Project7
                     {
                         Villager[n].DestinationPoint = new Point(Building[7].SpriteRectangle.X+100, Building[7].SpriteRectangle.Y + 20);
 
+                        if( rnd.Next(0, 2)==1)
+                            DrawIconStone = true;
+                        else
+                            DrawIconIronOre = true;
+
                         Villager[n].WorkTime = 0;
                         GetVillagerFrameList(n);
                         Villager[n].JobStatus = 2;
@@ -304,8 +331,16 @@ namespace Project7
                 
                 if (Villager[n].JobStatus == 2)
                 {
+                    if(DrawIconStone==true)
+                      Stone.SpriteRectangle = new Rectangle(Villager[n].SpriteRectangle.X, Villager[n].SpriteRectangle.Y-48, 36, 48);
+                    else
+                      IronOre.SpriteRectangle = new Rectangle(Villager[n].SpriteRectangle.X, Villager[n].SpriteRectangle.Y - 48, 36, 48);
+
                     if (Villager[n].DestinationPoint.X == Villager[n].SpriteRectangle.X && Villager[n].DestinationPoint.Y == Villager[n].SpriteRectangle.Y)
                     {
+                        DrawIconStone = false;
+                        DrawIconIronOre = false;
+
                         Villager[n].VillagerType.IsVisible=false;
                         if (gameTime.TotalGameTime.Seconds != Villager[n].TimeWorked)
                         {
@@ -316,6 +351,7 @@ namespace Project7
 
                         if (Villager[n].WorkTime == 2)
                         {
+                            
                             Villager[n].JobStatus = 0;
                             Villager[n].DestinationPoint =new Point( Building[4].SpriteRectangle.X+30, Building[4].SpriteRectangle.Y + 20);
                             Villager[n].VillagerType.IsVisible = true;
@@ -348,6 +384,8 @@ namespace Project7
 
                     if (Villager[n].WorkTime == 10)
                     {
+                        DrawIconFish = true;
+                        
                         Villager[n].DestinationPoint =new Point( Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20);
                         Villager[n].WorkTime = 0;
                         GetVillagerFrameList(n);
@@ -358,8 +396,11 @@ namespace Project7
 
                 if (Villager[n].JobStatus == 2)
                 {
+                    Fish.SpriteRectangle = new Rectangle(Villager[n].SpriteRectangle.X, Villager[n].SpriteRectangle.Y - 48, 36, 48);
+
                     if (Villager[n].DestinationPoint.X == Villager[n].SpriteRectangle.X && Villager[n].DestinationPoint.Y == Villager[n].SpriteRectangle.Y)
                     {
+                        DrawIconFish = false;
                         Villager[n].VillagerType.IsVisible = false;
                         if (gameTime.TotalGameTime.Seconds != Villager[n].TimeWorked)
                         {
@@ -397,6 +438,8 @@ namespace Project7
 
                     if (Villager[n].WorkTime == 10)
                     {
+                        DrawIconWood = true;
+
                         Villager[n].DestinationPoint = new Point(Building[2].SpriteRectangle.X + 100, Building[2].SpriteRectangle.Y + 20);
                         Villager[n].WorkTime = 0;
                         GetVillagerFrameList(n);
@@ -407,8 +450,12 @@ namespace Project7
 
                 if (Villager[n].JobStatus == 2)
                 {
+                    Wood.SpriteRectangle = new Rectangle(Villager[n].SpriteRectangle.X, Villager[n].SpriteRectangle.Y - 48, 36, 48);
+
                     if (Villager[n].DestinationPoint.X == Villager[n].SpriteRectangle.X && Villager[n].DestinationPoint.Y == Villager[n].SpriteRectangle.Y)
                     {
+                        DrawIconWood = false;
+
                         Villager[n].VillagerType.IsVisible = false;
                         if (gameTime.TotalGameTime.Seconds != Villager[n].TimeWorked)
                         {
@@ -446,6 +493,8 @@ namespace Project7
 
                     if (Villager[n].WorkTime == 10)
                     {
+                        DrawIconFood = true;
+
                         Villager[n].DestinationPoint = new Point(Building[8].SpriteRectangle.X + 100, Building[8].SpriteRectangle.Y + 20);
                         Villager[n].WorkTime = 0;
                         GetVillagerFrameList(n);
@@ -456,8 +505,12 @@ namespace Project7
 
                 if (Villager[n].JobStatus == 2)
                 {
+                    Food.SpriteRectangle = new Rectangle(Villager[n].SpriteRectangle.X, Villager[n].SpriteRectangle.Y - 48, 36, 48);
+
                     if (Villager[n].DestinationPoint.X == Villager[n].SpriteRectangle.X && Villager[n].DestinationPoint.Y == Villager[n].SpriteRectangle.Y)
                     {
+                        DrawIconFood = false;
+
                         Villager[n].VillagerType.IsVisible = false;
                         if (gameTime.TotalGameTime.Seconds != Villager[n].TimeWorked)
                         {
@@ -785,6 +838,7 @@ namespace Project7
                                 Villager[i].DestinationPoint = new Point(170,300);
                             if (test2 == 8)
                                 Villager[i].DestinationPoint = new Point(550,550);
+
                             Villager[i].VillagerType.IsVisible = true;
                             GetVillagerFrameList(i);
 
@@ -901,10 +955,61 @@ namespace Project7
             GlobalStatus = 30;
             ButtonSelected = false;
         }
+
         private void DayCounter(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.Seconds % 15 == 0 && gameTime.TotalGameTime.Milliseconds==0)
+            if (gameTime.TotalGameTime.Seconds % 15 == 0 && gameTime.TotalGameTime.Milliseconds == 0)
+            {
                 CurrentDay++;
+
+                for (int i = 0; i < Villager.Count; i++)
+                {
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.COLLECTORHOUSE)
+                    {
+                        Resourse[6].ResourseType.count += 5 * Building[0].BuildingType.currentLevel+1;
+                        Resourse[7].ResourseType.count += 10 * Building[0].BuildingType.currentLevel + 1;
+                    }
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.FARMERHOUSE)
+                        Resourse[6].ResourseType.count += 40 * Building[8].BuildingType.currentLevel + 1;
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.FISHERMANHOUSE)
+                        Resourse[6].ResourseType.count += 10 * Building[6].BuildingType.currentLevel + 1;
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.FORGEHOUSE)
+                        Resourse[3].ResourseType.count += 5 * Building[3].BuildingType.currentLevel + 1;
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.KITCHENHOUSE)
+                        Resourse[6].ResourseType.count += 5 * Building[1].BuildingType.currentLevel + 1;
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.LUMBERJACKHOUSE)
+                        Resourse[2].ResourseType.count += 5 * Building[2].BuildingType.currentLevel + 1;
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.MINERHOUSE)
+                    {
+                        Resourse[1].ResourseType.count += 5 * Building[4].BuildingType.currentLevel + 1;
+                        Resourse[0].ResourseType.count += 5 * Building[4].BuildingType.currentLevel + 1;
+                    }
+
+                    if (Villager[i].VillagerType.WorkPlace == BuildingType.SAWMILLHOUSE)
+                        Resourse[4].ResourseType.count += 5 * Building[5].BuildingType.currentLevel + 1;
+                }
+            }
+
+
+            if (gameTime.TotalGameTime.Seconds % 30 == 0 && gameTime.TotalGameTime.Milliseconds == 0 && Villager.Count < Building[7].BuildingType.maxVillagers[Building[7].BuildingType.currentLevel] 
+                && Building[7].BuildingType.currentVillagers < Building[7].BuildingType.maxVillagers[Building[7].BuildingType.currentLevel] && Villager.Count*2 < Resourse[6].ResourseType.count)
+            {
+                Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+
+                    for (int j = 0; j < testV.Length; j++)
+                    {
+                        Villager[Villager.Count-1].Texture[j] = Content.Load<Texture2D>(Villager[Villager.Count - 1].TexturePath[j]);
+                    }
+                    Villager[Villager.Count - 1].DestinationPoint = new Point(Villager[Villager.Count - 1].SpriteRectangle.X, Villager[Villager.Count - 1].SpriteRectangle.Y);
+
+                Resourse[6].ResourseType.count = Resourse[6].ResourseType.count - Villager.Count * 2;
+            }
         }
         private void WaterfallAnimation(GameTime gameTime)
         {
@@ -954,6 +1059,17 @@ namespace Project7
 
                 if (DrawRod == true)
                     _spriteBatch.Draw(Rod.Texture, new Vector2(Rod.SpriteRectangle.X, Rod.SpriteRectangle.Y), Color.White);
+
+                if(DrawIconIronOre==true)
+                    _spriteBatch.Draw(IronOre.Texture, new Vector2(IronOre.SpriteRectangle.X, IronOre.SpriteRectangle.Y), Color.White);
+                if (DrawIconFood == true)
+                    _spriteBatch.Draw(Food.Texture, new Vector2(Food.SpriteRectangle.X, Food.SpriteRectangle.Y), Color.White);
+                if (DrawIconFish == true)
+                    _spriteBatch.Draw(Fish.Texture, new Vector2(Fish.SpriteRectangle.X, Fish.SpriteRectangle.Y), Color.White);
+                if (DrawIconStone == true)
+                    _spriteBatch.Draw(Stone.Texture, new Vector2(Stone.SpriteRectangle.X, Stone.SpriteRectangle.Y), Color.White);
+                if (DrawIconWood == true)
+                    _spriteBatch.Draw(Wood.Texture, new Vector2(Wood.SpriteRectangle.X, Wood.SpriteRectangle.Y), Color.White);
 
             }
             else
