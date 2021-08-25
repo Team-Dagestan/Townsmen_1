@@ -9,108 +9,19 @@ using System;
 
 namespace Project7
 {
-    public class Sprite
-    {
-        
-        public Rectangle SpriteRectangle;
-        public Texture2D Texture;
-        public string TexturePath;
 
-        public Sprite(Rectangle spriteRectangle, Texture2D texture, string texturePath)
-        {
-            
-            SpriteRectangle = spriteRectangle;
-            Texture = texture;
-            TexturePath = texturePath;
-        }
-    }
-
-    public class SpriteResourse
-    {
-        public Resourse ResourseType;
-        public Rectangle SpriteRectangle;
-        public Texture2D Texture;
-        public string TexturePath;
-
-        public SpriteResourse(Resourse resourseType, Rectangle spriteRectangle, Texture2D texture, string texturePath)
-        {
-            ResourseType = resourseType;
-            SpriteRectangle = spriteRectangle;
-            Texture = texture;
-            TexturePath = texturePath;
-        }
-    }
-
-    public class SpriteBuilding
-    {
-        public Building BuildingType;
-        public Rectangle IconRectangle;
-        public Rectangle SpriteRectangle;
-        public Texture2D[] Texture;
-        public Texture2D[] Icon;
-        public string[] IconPath;
-        public string[] TexturePath;
-        
-
-        public SpriteBuilding(Building buildingType, Rectangle iconRectangle, Rectangle spriteRactangle, Texture2D[] texture, Texture2D[] icon, string[] iconPath, string[] texturePath)
-        {
-            BuildingType = buildingType;
-            IconRectangle = iconRectangle;
-            SpriteRectangle = spriteRactangle;
-            Texture = texture;
-            Icon = icon;
-            IconPath = iconPath;
-            TexturePath = texturePath;
-          
-        }
-    }
-
-    public class SpriteVillager
-    {
-        public Rectangle SpriteRectangle;
-        public int AnimationFrame;
-        public Texture2D[] Texture;
-        public string[] TexturePath;
-        public Villager VillagerType;
-        public Point DestinationPoint;
-        public int VillagerStep;
-        public int CurrentFrame;
-        public int[] FrameList;
-        public int WorkTime;
-        public int JobStatus;
-        public int TimeWorked = 0;
-        public SpriteVillager(Villager villagerType, Rectangle spriteRectangle, int animationFrame, Texture2D[] texture, string[] texturePath)
-        {
-            VillagerType = villagerType;
-            SpriteRectangle = spriteRectangle;
-            AnimationFrame = animationFrame;
-            Texture = texture;
-            TexturePath = texturePath;
-
-            VillagerStep = 5;
-            WorkTime = 0;
-            JobStatus = 0;
-            TimeWorked = 0;
-        }
-    }
-    
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        int GlobalStatus = 0;
-        bool ButtonSelected = false;
+        EnumGlobalStatus GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
+
+        Random rnd = new Random();
 
         List<SpriteResourse> Resourse = new List<SpriteResourse>();
-       
         List<SpriteBuilding> Building = new List<SpriteBuilding>();
-
         List<SpriteVillager> Villager = new List<SpriteVillager>();
-        
-        Texture2D wf;
-        Texture2D wf1;
-        Texture2D wf2;
 
         Sprite ResourseMenu;
         Sprite WorkMenu;
@@ -118,41 +29,48 @@ namespace Project7
         Sprite Background;
         Sprite Selection;
         Sprite Selection2;
-
-        Sprite Yes;
-        Sprite No;
-
-        Sprite Up;
-        Sprite Down;
-
-        SpriteFont font;
-        SpriteFont fontS;
-
+        Sprite Confirm;
+        Sprite Decline;
+        Sprite ArrowUp;
+        Sprite ArrowDown;
+        SpriteFont Font;
+        SpriteFont SmallFont;
         SpriteFont UnsafeRes;
         SpriteFont UnsafeGold;
-
         Sprite RodA;
         Sprite RodB;
         Sprite Rod;
-
         Sprite Wood;
         Sprite Fish;
         Sprite Food;
         Sprite Stone;
         Sprite IronOre;
 
-        Random rnd = new Random();
+        Texture2D[] VillagerTextures = new Texture2D[] { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
+        Texture2D Waterfall;
+        Texture2D WaterfallA;
+        Texture2D WaterfallB;
+
+        string[] VillagerTexturePaths = new string[] { "Textures/Animations/1", "Textures/Animations/2", "Textures/Animations/3", "Textures/Animations/4", "Textures/Animations/5",
+        "Textures/Animations/6","Textures/Animations/7","Textures/Animations/8","Textures/Animations/9","Textures/Animations/10","Textures/Animations/11","Textures/Animations/12",
+        "Textures/Animations/13","Textures/Animations/14","Textures/Animations/15","Textures/Animations/16","Textures/Animations/44","Textures/Animations/47","Textures/Animations/49.1","Textures/Animations/49.2"};
+
+        int IntUnsafeRes;
+        int IntUnsafeGold;
+        int CurrentDay = 0;
+        int SelectedItemID = 0;
+        int SelectedBuildingID = 0;
 
         bool DrawIconWood=false;
         bool DrawIconFish = false;
         bool DrawIconFood=false;
         bool DrawIconStone=false;
         bool DrawIconIronOre=false;
-
-        int IntUnsafeRes;
-        int IntUnsafeGold;
-
+        bool ButtonSelected = false;
         bool ButtonPressed = false;
+        bool DrawRod = false;
+        bool ButtonPressed2 = false;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -175,8 +93,8 @@ namespace Project7
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            font = Content.Load<SpriteFont>("Font/DefaultFont");
-            fontS = Content.Load<SpriteFont>("Font/smol");
+            Font = Content.Load<SpriteFont>("Font/DefaultFont");
+            SmallFont = Content.Load<SpriteFont>("Font/smol");
             UnsafeRes = Content.Load<SpriteFont>("Font/DefaultFont");
             UnsafeGold = Content.Load<SpriteFont>("Font/DefaultFont");
 
@@ -188,10 +106,10 @@ namespace Project7
 
             RodA = new Sprite(new Rectangle(140, 565, 28, 32), null, "Textures/Animations/48.1");
             RodB = new Sprite(new Rectangle(140, 565, 28, 32), null, "Textures/Animations/48.2");
-            Up = new Sprite(new Rectangle(350, 370, 28, 32), null, "Textures/34");
-            Down = new Sprite(new Rectangle(350, 420, 28, 32), null, "Textures/35");
-            Yes = new Sprite(new Rectangle(0, 788, 52, 44), null, "Textures/32");
-            No = new Sprite(new Rectangle(652, 780, 52, 52), null, "Textures/33");
+            ArrowUp = new Sprite(new Rectangle(350, 370, 28, 32), null, "Textures/34");
+            ArrowDown = new Sprite(new Rectangle(350, 420, 28, 32), null, "Textures/35");
+            Confirm = new Sprite(new Rectangle(0, 788, 52, 44), null, "Textures/32");
+            Decline = new Sprite(new Rectangle(652, 780, 52, 52), null, "Textures/33");
             Selection = new Sprite(new Rectangle(0,0,110,110), null, "Textures/selection");
             Selection2 = new Sprite(new Rectangle(0, 0, 90, 90), null, "Textures/selection2");
             BuildMenu = new Sprite(new Rectangle(155, 727, 100, 100), null, "Textures/build");
@@ -199,8 +117,8 @@ namespace Project7
             ResourseMenu = new Sprite(new Rectangle(455, 727, 100, 100),null, "Textures/res");
             Background = new Sprite(new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), null, "Textures/27");
 
-            wf1 = Content.Load<Texture2D>("Textures/Animations/46.1");
-            wf2 = Content.Load<Texture2D>("Textures/Animations/46.2");
+            WaterfallA = Content.Load<Texture2D>("Textures/Animations/46.1");
+            WaterfallB = Content.Load<Texture2D>("Textures/Animations/46.2");
 
             IronOre.Texture = Content.Load<Texture2D>(IronOre.TexturePath);
             Fish.Texture = Content.Load<Texture2D>(Fish.TexturePath);
@@ -210,10 +128,10 @@ namespace Project7
 
             RodA.Texture = Content.Load<Texture2D>(RodA.TexturePath);
             RodB.Texture = Content.Load<Texture2D>(RodB.TexturePath);
-            Up.Texture = Content.Load<Texture2D>(Up.TexturePath);
-            Down.Texture = Content.Load<Texture2D>(Down.TexturePath);
-            Yes.Texture = Content.Load<Texture2D>(Yes.TexturePath);
-            No.Texture = Content.Load<Texture2D>(No.TexturePath);
+            ArrowUp.Texture = Content.Load<Texture2D>(ArrowUp.TexturePath);
+            ArrowDown.Texture = Content.Load<Texture2D>(ArrowDown.TexturePath);
+            Confirm.Texture = Content.Load<Texture2D>(Confirm.TexturePath);
+            Decline.Texture = Content.Load<Texture2D>(Decline.TexturePath);
             Selection.Texture = Content.Load<Texture2D>(Selection.TexturePath);
             Selection2.Texture = Content.Load<Texture2D>(Selection2.TexturePath);
             Background.Texture = Content.Load<Texture2D>(Background.TexturePath);
@@ -232,11 +150,9 @@ namespace Project7
 
             Resourse.Where(x => x.ResourseType.resourseType == ResourseType.GOLD).ToList().ForEach(y => y.ResourseType.count = 500);
 
-
             for (int i = 0; i < Resourse.Count; i++)
             {
                 Resourse[i].Texture = Content.Load<Texture2D>(Resourse[i].TexturePath);
-               
             }
 
             Building.Add(new SpriteBuilding(new Collector(),  new Rectangle(300, 350, 80, 80), new Rectangle(340, 450, 80, 80), new Texture2D[] { null, null, null }, new Texture2D[] { null, null }, new string[] { "Textures/bag", "Textures/bagB" },               new string[] { "Textures/12", "Textures/13", "Textures/14" }));
@@ -259,27 +175,20 @@ namespace Project7
                 Building[i].Texture[2] = Content.Load<Texture2D>(Building[i].TexturePath[2]);
             }
 
-            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X+100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
-            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
-            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
-            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.COLLECTORHOUSE), new Rectangle(Building[0].SpriteRectangle.X + 20, Building[0].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X+100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, VillagerTextures, VillagerTexturePaths));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, VillagerTextures, VillagerTexturePaths));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, VillagerTextures, VillagerTexturePaths));
+            Villager.Add(new SpriteVillager(new Villager(false, BuildingType.COLLECTORHOUSE), new Rectangle(Building[0].SpriteRectangle.X + 20, Building[0].SpriteRectangle.Y + 20, 32, 40), 0, VillagerTextures, VillagerTexturePaths));
            
-
-
             for (int i = 0; i < Villager.Count; i++)
             {
-                for (int j = 0; j < testV.Length; j++)
+                for (int j = 0; j < VillagerTextures.Length; j++)
                 {
                     Villager[i].Texture[j] = Content.Load<Texture2D>(Villager[i].TexturePath[j]);
                 }
                 Villager[i].DestinationPoint = new Point( Villager[i].SpriteRectangle.X, Villager[i].SpriteRectangle.Y);
             }
         }
-
-        Texture2D[] testV = new Texture2D[] { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
-        string[] testT = new string[] { "Textures/Animations/1", "Textures/Animations/2", "Textures/Animations/3", "Textures/Animations/4", "Textures/Animations/5",
-        "Textures/Animations/6","Textures/Animations/7","Textures/Animations/8","Textures/Animations/9","Textures/Animations/10","Textures/Animations/11","Textures/Animations/12",
-        "Textures/Animations/13","Textures/Animations/14","Textures/Animations/15","Textures/Animations/16","Textures/Animations/44","Textures/Animations/47","Textures/Animations/49.1","Textures/Animations/49.2"};
 
         public void VillagersChangeBuilding()
         {
@@ -531,9 +440,8 @@ namespace Project7
             }
 
         }
-        bool DrawRod = false;
        
-        
+       
         public void GetVillagerFrameList(int n)
         {
             if (Villager[n].DestinationPoint.X > Villager[n].SpriteRectangle.X)
@@ -581,10 +489,7 @@ namespace Project7
                 }
             }
         }
-        
-        
 
-        
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -600,10 +505,9 @@ namespace Project7
 
             Cheats();
 
-            
             ButtonSelected = false;
          
-            if (GlobalStatus == 0)
+            if (GlobalStatus == EnumGlobalStatus.GAME)
             {
                 if (ResourseMenu.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
@@ -630,7 +534,7 @@ namespace Project7
                 }
             }
 
-            if(GlobalStatus==3)
+            if(GlobalStatus==EnumGlobalStatus.RESOURSE_MENU)
             {
                 for (int i = 0; i < Resourse.Count-1; i++)
                 {
@@ -648,22 +552,22 @@ namespace Project7
                 if (Mouse.GetState().LeftButton == ButtonState.Released)
                     ButtonPressed = false;
 
-                if (No.SpriteRectangle.Contains(Mouse.GetState().Position))
+                if (Decline.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed && ButtonPressed == false)
                         NoButtonClick();
                 }
             }
 
-            if(GlobalStatus == 30)
+            if(GlobalStatus == EnumGlobalStatus.RESOURSE_MENU_SELECT)
             {
-                Up.SpriteRectangle = new Rectangle(350, 390, 28, 32);
-                Down.SpriteRectangle = new Rectangle(350, 440, 28, 32);
+                ArrowUp.SpriteRectangle = new Rectangle(350, 390, 28, 32);
+                ArrowDown.SpriteRectangle = new Rectangle(350, 440, 28, 32);
 
                 if (Mouse.GetState().LeftButton == ButtonState.Released)
                     ButtonPressed = false;
 
-                if (No.SpriteRectangle.Contains(Mouse.GetState().Position) )
+                if (Decline.SpriteRectangle.Contains(Mouse.GetState().Position) )
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -671,12 +575,12 @@ namespace Project7
                         NoButtonClick();
                     }
                 }
-                if (Yes.SpriteRectangle.Contains(Mouse.GetState().Position))
+                if (Confirm.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         YesButtonClick();
                 }
-                if (Up.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed == false)
+                if (ArrowUp.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed == false)
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -684,7 +588,7 @@ namespace Project7
                         UpButtonClick(SelectedItemID);
                     }
                 }
-                if (Down.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed == false)
+                if (ArrowDown.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed == false)
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -694,12 +598,12 @@ namespace Project7
                 }
             }
 
-            if(GlobalStatus==1)
+            if(GlobalStatus==EnumGlobalStatus.BUILDING_MENU)
             {
                 if (Mouse.GetState().LeftButton == ButtonState.Released)
                     ButtonPressed = false;
 
-                if (No.SpriteRectangle.Contains(Mouse.GetState().Position))
+                if (Decline.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed && ButtonPressed == false)
                         NoButtonClick();
@@ -722,15 +626,15 @@ namespace Project7
                 }
             }
 
-            if(GlobalStatus == 10)
+            if(GlobalStatus == EnumGlobalStatus.BUILDING_MENU_SELECT)
             {
                 if (Mouse.GetState().LeftButton == ButtonState.Released)
                     ButtonPressed = false;
 
-                Up.SpriteRectangle = new Rectangle(350, 390, 28, 32);
-                Down.SpriteRectangle = new Rectangle(350, 440, 28, 32);
+                ArrowUp.SpriteRectangle = new Rectangle(350, 390, 28, 32);
+                ArrowDown.SpriteRectangle = new Rectangle(350, 440, 28, 32);
 
-                if (No.SpriteRectangle.Contains(Mouse.GetState().Position))
+                if (Decline.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -738,19 +642,19 @@ namespace Project7
                         NoButtonClick();
                     }
                 }
-                if (Yes.SpriteRectangle.Contains(Mouse.GetState().Position))
+                if (Confirm.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         YesButtonClick();
                 }
             }
 
-            if (GlobalStatus == 2)
+            if (GlobalStatus == EnumGlobalStatus.VILLAGER_JOB_MENU)
             {
                 if (Mouse.GetState().LeftButton == ButtonState.Released)
                     ButtonPressed2 = false;
 
-                if (No.SpriteRectangle.Contains(Mouse.GetState().Position))
+                if (Decline.SpriteRectangle.Contains(Mouse.GetState().Position))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -769,14 +673,14 @@ namespace Project7
                         if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         {
                             SelectedBuildingID = i;
-                            Up.SpriteRectangle = new Rectangle(Building[i].IconRectangle.X - 40, Building[i].IconRectangle.Y, 28, 32);
-                            Down.SpriteRectangle = new Rectangle(Building[i].IconRectangle.X - 40, Building[i].IconRectangle.Y +50, 28, 32);
+                            ArrowUp.SpriteRectangle = new Rectangle(Building[i].IconRectangle.X - 40, Building[i].IconRectangle.Y, 28, 32);
+                            ArrowDown.SpriteRectangle = new Rectangle(Building[i].IconRectangle.X - 40, Building[i].IconRectangle.Y +50, 28, 32);
                             ButtonPressed = true;
                         }
                     }
                 }
 
-                if (Up.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed2 == false )
+                if (ArrowUp.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed2 == false )
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -784,7 +688,7 @@ namespace Project7
                         UpButtonClick(SelectedBuildingID);
                     }
                 }
-                if (Down.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed2 == false)
+                if (ArrowDown.SpriteRectangle.Contains(Mouse.GetState().Position) && ButtonPressed2 == false)
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
@@ -799,7 +703,7 @@ namespace Project7
 
             base.Update(gameTime);
         }
-        bool ButtonPressed2 = false;
+
         private void Cheats()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Z) && Keyboard.GetState().IsKeyDown(Keys.X) && Keyboard.GetState().IsKeyDown(Keys.C))
@@ -808,15 +712,16 @@ namespace Project7
                     Resourse[i].ResourseType.count = 9999;
                 }
         }
+
         private void BuildingClick()
         {
-            GlobalStatus = 10;
+            GlobalStatus = EnumGlobalStatus.BUILDING_MENU_SELECT;
             ButtonSelected = false;
         }
       
         private void UpButtonClick(int test2)/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         {
-            if (GlobalStatus == 30)
+            if (GlobalStatus == EnumGlobalStatus.RESOURSE_MENU_SELECT)
             {
                 if (IntUnsafeGold >= Resourse[SelectedItemID].ResourseType.price)
                 {
@@ -850,7 +755,7 @@ namespace Project7
         }
         private void DownButtonClick(int test2)
         {
-            if (GlobalStatus == 30)
+            if (GlobalStatus == EnumGlobalStatus.RESOURSE_MENU_SELECT)
             {
                 if (IntUnsafeRes >= 1)
                 {
@@ -879,13 +784,13 @@ namespace Project7
         }
         private void YesButtonClick()
         {
-            if (GlobalStatus == 30)
+            if (GlobalStatus == EnumGlobalStatus.RESOURSE_MENU_SELECT)
             {
                 Resourse[7].ResourseType.count = IntUnsafeGold;
                 Resourse[SelectedItemID].ResourseType.count = IntUnsafeRes;
-                GlobalStatus = 3;
+                GlobalStatus = EnumGlobalStatus.RESOURSE_MENU;
             }
-            else if(GlobalStatus ==10)
+            else if(GlobalStatus ==EnumGlobalStatus.BUILDING_MENU_SELECT)
             {
                 int count = 0;
                 for (int i = 0; i < Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].Count; i++)
@@ -905,7 +810,7 @@ namespace Project7
                         if(Building[SelectedBuildingID].BuildingType.currentLevel!=2)
                     Building[SelectedBuildingID].BuildingType.currentLevel++;
 
-                    GlobalStatus = 1;
+                    GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
                 }
 
                 
@@ -914,17 +819,17 @@ namespace Project7
         }
         private void NoButtonClick()
         {
-            if (GlobalStatus == 30)
-                GlobalStatus = 3;
-            else if (GlobalStatus == 3)
-                GlobalStatus = 0;
-            else if (GlobalStatus == 10)
-                GlobalStatus = 1;
-            else if (GlobalStatus == 1)
-                GlobalStatus = 0;
-            else if (GlobalStatus == 2)
+            if (GlobalStatus == EnumGlobalStatus.RESOURSE_MENU_SELECT)
+                GlobalStatus = EnumGlobalStatus.RESOURSE_MENU;
+            else if (GlobalStatus == EnumGlobalStatus.RESOURSE_MENU)
+                GlobalStatus = EnumGlobalStatus.GAME;
+            else if (GlobalStatus == EnumGlobalStatus.BUILDING_MENU_SELECT)
+                GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
+            else if (GlobalStatus == EnumGlobalStatus.BUILDING_MENU)
+                GlobalStatus = EnumGlobalStatus.GAME;
+            else if (GlobalStatus == EnumGlobalStatus.VILLAGER_JOB_MENU)
             {
-                GlobalStatus = 0;
+                GlobalStatus = EnumGlobalStatus.GAME;
                 ButtonPressed = false;
             }
 
@@ -932,27 +837,26 @@ namespace Project7
         }
         private void BuildMenuClick()
         {
-            GlobalStatus = 1;
+            GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
             ButtonSelected = false;
         }
         private void WorkMenuClick()
         {
-            GlobalStatus = 2;
+            GlobalStatus = EnumGlobalStatus.VILLAGER_JOB_MENU;
             ButtonSelected = false;
         }
         private void ResourseMenuClick()
         {
-            GlobalStatus = 3;
+            GlobalStatus = EnumGlobalStatus.RESOURSE_MENU;
             ButtonSelected = false;
         }
-        int SelectedItemID = 0;
-        int SelectedBuildingID = 0;
+
         private void ResourseClick()
         {
             IntUnsafeRes= Resourse[SelectedItemID].ResourseType.count;
             IntUnsafeGold = Resourse[7].ResourseType.count;
 
-            GlobalStatus = 30;
+            GlobalStatus = EnumGlobalStatus.RESOURSE_MENU_SELECT;
             ButtonSelected = false;
         }
 
@@ -1000,9 +904,9 @@ namespace Project7
             if (gameTime.TotalGameTime.Seconds % 30 == 0 && gameTime.TotalGameTime.Milliseconds == 0 && Villager.Count < Building[7].BuildingType.maxVillagers[Building[7].BuildingType.currentLevel] 
                 && Building[7].BuildingType.currentVillagers < Building[7].BuildingType.maxVillagers[Building[7].BuildingType.currentLevel] && Villager.Count*2 < Resourse[6].ResourseType.count)
             {
-                Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, testV, testT));
+                Villager.Add(new SpriteVillager(new Villager(false, BuildingType.TOWNHALL), new Rectangle(Building[7].SpriteRectangle.X + 100, Building[7].SpriteRectangle.Y + 20, 32, 40), 0, VillagerTextures, VillagerTexturePaths));
 
-                    for (int j = 0; j < testV.Length; j++)
+                    for (int j = 0; j < VillagerTextures.Length; j++)
                     {
                         Villager[Villager.Count-1].Texture[j] = Content.Load<Texture2D>(Villager[Villager.Count - 1].TexturePath[j]);
                     }
@@ -1014,13 +918,13 @@ namespace Project7
         private void WaterfallAnimation(GameTime gameTime)
         {
             if (gameTime.TotalGameTime.Milliseconds % 500 == 0)
-                if (wf == wf1)
-                    wf = wf2;
+                if (Waterfall == WaterfallA)
+                    Waterfall = WaterfallB;
                 else
-                    wf = wf1;
+                    Waterfall = WaterfallA;
         }
 
-        int CurrentDay = 0;
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -1034,16 +938,16 @@ namespace Project7
             if (ButtonSelected == true)
                 _spriteBatch.Draw(Selection.Texture, new Vector2(Selection.SpriteRectangle.X, Selection.SpriteRectangle.Y), Color.White);
 
-            if (GlobalStatus == 0)
+            if (GlobalStatus == EnumGlobalStatus.GAME)
             {
-                _spriteBatch.Draw(wf,new Vector2(436,240),Color.White);
+                _spriteBatch.Draw(Waterfall,new Vector2(436,240),Color.White);
                
                 _spriteBatch.Draw(BuildMenu.Texture, new Vector2(BuildMenu.SpriteRectangle.X, BuildMenu.SpriteRectangle.Y), Color.White);
                 _spriteBatch.Draw(WorkMenu.Texture, new Vector2(WorkMenu.SpriteRectangle.X, WorkMenu.SpriteRectangle.Y), Color.White);
                 _spriteBatch.Draw(ResourseMenu.Texture, new Vector2(ResourseMenu.SpriteRectangle.X, ResourseMenu.SpriteRectangle.Y), Color.White);
 
-                _spriteBatch.DrawString(font, $"Day  {CurrentDay}", new Vector2(3, 3), Color.Black);
-                _spriteBatch.DrawString(font, $"Day  {CurrentDay}", Vector2.Zero, Color.White);
+                _spriteBatch.DrawString(Font, $"Day  {CurrentDay}", new Vector2(3, 3), Color.Black);
+                _spriteBatch.DrawString(Font, $"Day  {CurrentDay}", Vector2.Zero, Color.White);
 
                 for (int i = 0; i < Building.Count; i++)
                 {
@@ -1075,36 +979,36 @@ namespace Project7
             else
                 _spriteBatch.Draw(Background.Texture, new Vector2(Background.SpriteRectangle.X, Background.SpriteRectangle.Y), Color.Black);
 
-            if(GlobalStatus == 3)
+            if(GlobalStatus == EnumGlobalStatus.RESOURSE_MENU)
             {
                
-                _spriteBatch.Draw(No.Texture, new Vector2(No.SpriteRectangle.X, No.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Decline.Texture, new Vector2(Decline.SpriteRectangle.X, Decline.SpriteRectangle.Y), Color.White);
 
                 if (ButtonSelected == true)
                     _spriteBatch.Draw(Selection2.Texture, new Vector2(Selection2.SpriteRectangle.X, Selection2.SpriteRectangle.Y), Color.White);
                 for (int i = 0; i < Resourse.Count; i++)
                 {
                     _spriteBatch.Draw(Resourse[i].Texture, new Vector2(Resourse[i].SpriteRectangle.X, Resourse[i].SpriteRectangle.Y), Color.White);
-                    _spriteBatch.DrawString(font, Resourse[i].ResourseType.count.ToString(), new Vector2(Resourse[i].SpriteRectangle.X + 140, Resourse[i].SpriteRectangle.Y), Color.White);
+                    _spriteBatch.DrawString(Font, Resourse[i].ResourseType.count.ToString(), new Vector2(Resourse[i].SpriteRectangle.X + 140, Resourse[i].SpriteRectangle.Y), Color.White);
                 }
             }
 
-            if(GlobalStatus == 30)
+            if(GlobalStatus == EnumGlobalStatus.RESOURSE_MENU_SELECT)
             {
                 _spriteBatch.Draw(Resourse[SelectedItemID].Texture, new Vector2(220,270), Color.White);
                 _spriteBatch.Draw(Resourse[7].Texture, new Vector2(220, 480), Color.White);
-                _spriteBatch.Draw(No.Texture, new Vector2(No.SpriteRectangle.X, No.SpriteRectangle.Y), Color.White);
-                _spriteBatch.Draw(Yes.Texture, new Vector2(Yes.SpriteRectangle.X, Yes.SpriteRectangle.Y), Color.White);
-                _spriteBatch.Draw(Up.Texture, new Vector2(Up.SpriteRectangle.X, Up.SpriteRectangle.Y), Color.White);
-                _spriteBatch.Draw(Down.Texture, new Vector2(Down.SpriteRectangle.X, Down.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Decline.Texture, new Vector2(Decline.SpriteRectangle.X, Decline.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Confirm.Texture, new Vector2(Confirm.SpriteRectangle.X, Confirm.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(ArrowUp.Texture, new Vector2(ArrowUp.SpriteRectangle.X, ArrowUp.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(ArrowDown.Texture, new Vector2(ArrowDown.SpriteRectangle.X, ArrowDown.SpriteRectangle.Y), Color.White);
 
                 _spriteBatch.DrawString(UnsafeRes, IntUnsafeRes.ToString(), new Vector2(320,270), Color.White);
                 _spriteBatch.DrawString(UnsafeGold, IntUnsafeGold.ToString(), new Vector2(320,480), Color.White);
             }
 
-            if(GlobalStatus == 1)
+            if(GlobalStatus == EnumGlobalStatus.BUILDING_MENU)
             {
-                _spriteBatch.Draw(No.Texture, new Vector2(No.SpriteRectangle.X, No.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Decline.Texture, new Vector2(Decline.SpriteRectangle.X, Decline.SpriteRectangle.Y), Color.White);
 
                 if (ButtonSelected == true)
                     _spriteBatch.Draw(Selection2.Texture, new Vector2(Selection2.SpriteRectangle.X, Selection2.SpriteRectangle.Y), Color.White);
@@ -1115,10 +1019,10 @@ namespace Project7
                 }
             }
 
-            if(GlobalStatus==10)
+            if(GlobalStatus== EnumGlobalStatus.BUILDING_MENU_SELECT)
             {
-                _spriteBatch.Draw(No.Texture, new Vector2(No.SpriteRectangle.X, No.SpriteRectangle.Y), Color.White);
-                _spriteBatch.Draw(Yes.Texture, new Vector2(Yes.SpriteRectangle.X, Yes.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Decline.Texture, new Vector2(Decline.SpriteRectangle.X, Decline.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Confirm.Texture, new Vector2(Confirm.SpriteRectangle.X, Confirm.SpriteRectangle.Y), Color.White);
 
                 if(Building[SelectedBuildingID].BuildingType.currentLevel == 0 && Building[SelectedBuildingID].BuildingType.isPlaced == false)
                 {
@@ -1147,7 +1051,7 @@ namespace Project7
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(300, 200), Color.White);
                     _spriteBatch.Draw(Building[SelectedBuildingID].Icon[0], new Vector2(400, 200), Color.White);
 
-                    _spriteBatch.DrawString(font, "Maxed out!", new Vector2(160, 320), Color.White);
+                    _spriteBatch.DrawString(Font, "Maxed out!", new Vector2(160, 320), Color.White);
                 }
 
                 if (Building[SelectedBuildingID].BuildingType.currentLevel != 2)
@@ -1156,7 +1060,7 @@ namespace Project7
                     {
                         _spriteBatch.Draw(Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].Texture, new Vector2(200, 300 + i * 100), Color.White);
 
-                        _spriteBatch.DrawString(font, $"{Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count}" +
+                        _spriteBatch.DrawString(Font, $"{Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count}" +
                             $"/{Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value}  ", new Vector2(320, 300 + i * 100),
                             Resourse[(int)Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Key].ResourseType.count >= Building[SelectedBuildingID].BuildingType.BuildingPrice[Building[SelectedBuildingID].BuildingType.currentLevel].ElementAt(i).Value ? Color.Green : Color.Red);
 
@@ -1164,9 +1068,9 @@ namespace Project7
                 }
             }
 
-            if(GlobalStatus == 2)
+            if(GlobalStatus == EnumGlobalStatus.VILLAGER_JOB_MENU)
             {
-                _spriteBatch.Draw(No.Texture, new Vector2(No.SpriteRectangle.X, No.SpriteRectangle.Y), Color.White);
+                _spriteBatch.Draw(Decline.Texture, new Vector2(Decline.SpriteRectangle.X, Decline.SpriteRectangle.Y), Color.White);
 
                 if (ButtonSelected == true)
                 {
@@ -1175,14 +1079,14 @@ namespace Project7
 
                 if(ButtonPressed == true)
                 {
-                    _spriteBatch.Draw(Up.Texture, new Vector2(Up.SpriteRectangle.X, Up.SpriteRectangle.Y), Color.White);
-                    _spriteBatch.Draw(Down.Texture, new Vector2(Down.SpriteRectangle.X, Down.SpriteRectangle.Y), Color.White);
+                    _spriteBatch.Draw(ArrowUp.Texture, new Vector2(ArrowUp.SpriteRectangle.X, ArrowUp.SpriteRectangle.Y), Color.White);
+                    _spriteBatch.Draw(ArrowDown.Texture, new Vector2(ArrowDown.SpriteRectangle.X, ArrowDown.SpriteRectangle.Y), Color.White);
                 }
 
                 for (int i = 0; i < Building.Count; i++)
                 {
                     _spriteBatch.Draw(Building[i].BuildingType.isPlaced == true?Building[i].Icon[0]: Building[i].Icon[1], new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y), Color.White);
-                    _spriteBatch.DrawString(fontS, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers[Building[i].BuildingType.currentLevel]}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y+90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
+                    _spriteBatch.DrawString(SmallFont, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers[Building[i].BuildingType.currentLevel]}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y+90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
                 }
             }
 
