@@ -16,7 +16,7 @@ namespace Project7
         private SpriteBatch _spriteBatch;
 
 
-        EnumGlobalStatus GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
+        EnumGlobalStatus GlobalStatus = EnumGlobalStatus.GAME;
 
         Random rnd = new Random();
 
