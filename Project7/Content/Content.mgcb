@@ -1120,6 +1120,7 @@
 /build:Textures/Без имени-2.png;Textures/work.png
 
 #begin Textures/Без имени-3.png
+
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1129,5 +1130,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+
 /build:Textures/Без имени-3.png;Textures/res.png
+
 

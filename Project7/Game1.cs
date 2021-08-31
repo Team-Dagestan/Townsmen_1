@@ -15,6 +15,7 @@ namespace Project7
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+
         EnumGlobalStatus GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
 
         Random rnd = new Random();
@@ -71,6 +72,7 @@ namespace Project7
         bool DrawRod = false;
         bool ButtonPressed2 = false;
 
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -80,6 +82,7 @@ namespace Project7
 
         protected override void Initialize()
         {
+
             base.Initialize();
 
             _graphics.PreferredBackBufferWidth = 704;
@@ -87,11 +90,13 @@ namespace Project7
             _graphics.ApplyChanges();
 
             Window.Title = "Townsmen 1";
+
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
 
             Font = Content.Load<SpriteFont>("Font/DefaultFont");
             SmallFont = Content.Load<SpriteFont>("Font/smol");
@@ -488,6 +493,7 @@ namespace Project7
                     Villager[n].VillagerType.IsVisible = false;
                 }
             }
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -927,6 +933,7 @@ namespace Project7
 
         protected override void Draw(GameTime gameTime)
         {
+        
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             _spriteBatch.Begin();
@@ -1089,6 +1096,7 @@ namespace Project7
                     _spriteBatch.DrawString(SmallFont, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers[Building[i].BuildingType.currentLevel]}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y+90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
                 }
             }
+
 
 
             _spriteBatch.End();
