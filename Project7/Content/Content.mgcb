@@ -27,6 +27,30 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/smol.spritefont
 
+#begin Intro/IntroB.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Intro/IntroB.png
+
+#begin Intro/IntroGameA75.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Intro/IntroGameA75.png
+
 #begin Textures/0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1120,7 +1144,6 @@
 /build:Textures/Без имени-2.png;Textures/work.png
 
 #begin Textures/Без имени-3.png
-
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1130,7 +1153,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-
 /build:Textures/Без имени-3.png;Textures/res.png
-
 

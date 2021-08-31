@@ -16,7 +16,7 @@ namespace Project7
         private SpriteBatch _spriteBatch;
 
 
-        EnumGlobalStatus GlobalStatus = EnumGlobalStatus.BUILDING_MENU;
+        EnumGlobalStatus GlobalStatus = EnumGlobalStatus.INTROGAME;
 
         Random rnd = new Random();
 
@@ -46,7 +46,8 @@ namespace Project7
         Sprite Food;
         Sprite Stone;
         Sprite IronOre;
-
+        Sprite IntroA;
+        Sprite IntroB;
         Texture2D[] VillagerTextures = new Texture2D[] { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
         Texture2D Waterfall;
         Texture2D WaterfallA;
@@ -122,6 +123,9 @@ namespace Project7
             ResourseMenu = new Sprite(new Rectangle(455, 727, 100, 100),null, "Textures/res");
             Background = new Sprite(new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), null, "Textures/27");
 
+            IntroA = new Sprite(new Rectangle(130, 350, 0, 0), null, "Intro/IntroGameA75");
+            IntroB = new Sprite(new Rectangle(130, 350, 0, 0), null, "Intro/IntroB");
+
             WaterfallA = Content.Load<Texture2D>("Textures/Animations/46.1");
             WaterfallB = Content.Load<Texture2D>("Textures/Animations/46.2");
 
@@ -130,6 +134,9 @@ namespace Project7
             Food.Texture = Content.Load<Texture2D>(Food.TexturePath);
             Stone.Texture = Content.Load<Texture2D>(Stone.TexturePath);
             Wood.Texture = Content.Load<Texture2D>(Wood.TexturePath);
+
+            IntroA.Texture = Content.Load<Texture2D>(IntroA.TexturePath);
+            IntroB.Texture = Content.Load<Texture2D>(IntroB.TexturePath);
 
             RodA.Texture = Content.Load<Texture2D>(RodA.TexturePath);
             RodB.Texture = Content.Load<Texture2D>(RodB.TexturePath);
@@ -1096,8 +1103,24 @@ namespace Project7
                     _spriteBatch.DrawString(SmallFont, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers[Building[i].BuildingType.currentLevel]}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y+90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
                 }
             }
-
-
+            if(GlobalStatus == EnumGlobalStatus.INTROGAME)
+            {
+                _spriteBatch.Draw(IntroA.Texture, new Vector2(IntroA.SpriteRectangle.X, IntroA.SpriteRectangle.Y), Color.White);
+                Update(gameTime);
+                if (gameTime.TotalGameTime.TotalSeconds > 2)
+                {
+                    GlobalStatus = EnumGlobalStatus.INTROTEAM;
+                }
+            }
+            if(GlobalStatus == EnumGlobalStatus.INTROTEAM)
+            {
+                _spriteBatch.Draw(IntroB.Texture, new Vector2(IntroB.SpriteRectangle.X, IntroB.SpriteRectangle.Y), Color.White);
+                Update(gameTime);
+                if (gameTime.TotalGameTime.TotalSeconds > 4)
+                {
+                    GlobalStatus = EnumGlobalStatus.GAME;
+                }
+            }
 
             _spriteBatch.End();
 

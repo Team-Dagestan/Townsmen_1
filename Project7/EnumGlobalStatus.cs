@@ -2,6 +2,8 @@
 {
     public enum EnumGlobalStatus : int
     {
+        INTROGAME =-2,
+        INTROTEAM =-1,
         GAME=0,
         BUILDING_MENU=1,
         BUILDING_MENU_SELECT = 2,
