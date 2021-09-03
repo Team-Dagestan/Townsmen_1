@@ -19,6 +19,8 @@ namespace Project7
         EnumGlobalStatus GlobalStatus = EnumGlobalStatus.INTROGAME;
 
         Random rnd = new Random();
+
+        GameInfo SaveLoad;
         
 
         List<SpriteResourse> Resourse = new List<SpriteResourse>();
@@ -507,7 +509,10 @@ namespace Project7
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                SaveLoad.Save(SaveLoad);
                 Exit();
+            }
 
             for (int i = 0; i < Villager.Count; i++)
             {
