@@ -19,6 +19,7 @@ namespace Project7
         EnumGlobalStatus GlobalStatus = EnumGlobalStatus.INTROGAME;
 
         Random rnd = new Random();
+        
 
         List<SpriteResourse> Resourse = new List<SpriteResourse>();
         List<SpriteBuilding> Building = new List<SpriteBuilding>();
