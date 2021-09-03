@@ -52,6 +52,7 @@
     <Compile Include="Building\BuildingType\Miner.cs" />
     <Compile Include="Building\BuildingType\Sawmill.cs" />
     <Compile Include="Building\BuildingType\Town.cs" />
+    <Compile Include="GameInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resourse\Resourse.cs" />
     <Compile Include="Resourse\ResourseType\Food.cs" />

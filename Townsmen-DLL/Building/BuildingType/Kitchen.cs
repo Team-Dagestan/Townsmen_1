@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DLL_Townsmen
 {
-   public class Kitchen:Building
+    [Serializable]
+    public class Kitchen:Building
     {
         public Kitchen():base()
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DLL_Townsmen
 {
+    [Serializable]
     public class Hammer:Resourse
     {
         public Hammer():base()
