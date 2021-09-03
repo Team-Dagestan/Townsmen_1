@@ -952,6 +952,8 @@ namespace Project7
             if (ButtonSelected == true)
                 _spriteBatch.Draw(Selection.Texture, new Vector2(Selection.SpriteRectangle.X, Selection.SpriteRectangle.Y), Color.White);
 
+           
+
             if (GlobalStatus == EnumGlobalStatus.GAME)
             {
                 _spriteBatch.Draw(Waterfall, new Vector2(436, 240), Color.White);
@@ -1103,36 +1105,40 @@ namespace Project7
                     _spriteBatch.DrawString(SmallFont, $"{Building[i].BuildingType.currentVillagers}/{Building[i].BuildingType.maxVillagers[Building[i].BuildingType.currentLevel]}", new Vector2(Building[i].IconRectangle.X, Building[i].IconRectangle.Y + 90), Building[i].BuildingType.isPlaced == true ? Color.White : Color.Black);
                 }
             }
+
+
             if (GlobalStatus == EnumGlobalStatus.INTROGAME)
             {
-                _spriteBatch.Draw(IntroA.Texture, new Vector2(IntroA.SpriteRectangle.X, IntroA.SpriteRectangle.Y), Color.White * 2);
-               
 
-                if (gameTime.TotalGameTime.TotalSeconds > 1)
+                if (gameTime.TotalGameTime.TotalSeconds < 1)
                 {
                     _spriteBatch.Draw(IntroA.Texture, new Vector2(IntroA.SpriteRectangle.X, IntroA.SpriteRectangle.Y), Color.White);
                 }
+                else
+                    _spriteBatch.Draw(IntroA.Texture, new Vector2(IntroA.SpriteRectangle.X, IntroA.SpriteRectangle.Y), Color.White * (float)(1 - (gameTime.TotalGameTime.TotalMilliseconds % 1000) / 1000));
+
                 if (gameTime.TotalGameTime.TotalSeconds > 2)
                 {
                     GlobalStatus = EnumGlobalStatus.INTROTEAM;
                 }
-                Update(gameTime);
+                //Update(gameTime);
             }
+
             if (GlobalStatus == EnumGlobalStatus.INTROTEAM)
             {
-                _spriteBatch.Draw(IntroB.Texture, new Vector2(IntroB.SpriteRectangle.X, IntroB.SpriteRectangle.Y), Color.White);
-                Update(gameTime);
-                if (gameTime.TotalGameTime.TotalSeconds > 3)
+                //Update(gameTime);
+                if (gameTime.TotalGameTime.TotalSeconds < 3)
                 {
-                    _spriteBatch.Draw(IntroB.Texture, new Vector2(IntroB.SpriteRectangle.X, IntroB.SpriteRectangle.Y), Color.White*0.5f);
-                   
+                    _spriteBatch.Draw(IntroB.Texture, new Vector2(IntroB.SpriteRectangle.X, IntroB.SpriteRectangle.Y), Color.White);
                 }
-                if (gameTime.TotalGameTime.TotalSeconds > 4)
+                else
+                    _spriteBatch.Draw(IntroB.Texture, new Vector2(IntroB.SpriteRectangle.X, IntroB.SpriteRectangle.Y), Color.White * (float)(1 - (gameTime.TotalGameTime.TotalMilliseconds % 1000) / 1000));
+
+                if (gameTime.TotalGameTime.TotalMilliseconds > 3900)
                 {
                     GlobalStatus = EnumGlobalStatus.GAME;
                 }
             }
-
             _spriteBatch.End();
 
             base.Draw(gameTime);
