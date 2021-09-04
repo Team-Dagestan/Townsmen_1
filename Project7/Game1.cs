@@ -20,7 +20,7 @@ namespace Project7
 
         Random rnd = new Random();
 
-        GameInfo SaveLoad;
+        GameInfo SaveLoad = new GameInfo();
         
 
         List<SpriteResourse> Resourse = new List<SpriteResourse>();
@@ -510,6 +510,17 @@ namespace Project7
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
+                SaveLoad.resourses = new List<Resourse>();
+                SaveLoad.buildings = new List<Building>();
+                SaveLoad.villagers = new List<Villager>();
+                for (int i = 0; i < Building.Count; i++)
+                {
+                    SaveLoad.UpdateInfo((i < Resourse.Count) ? Resourse[i].ResourseType : null,
+                        (i < Building.Count) ? Building[i].BuildingType : null,
+                        (i < Villager.Count) ? Villager[i].VillagerType : null,
+                        CurrentDay);
+                }
+
                 SaveLoad.Save(SaveLoad);
                 Exit();
             }
