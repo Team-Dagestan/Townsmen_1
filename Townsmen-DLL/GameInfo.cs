@@ -7,7 +7,7 @@ using DLL_Townsmen;
 namespace Project7
 {
     [Serializable]
-    public partial class GameInfo
+    public class GameInfo
     {
         public Resourse resourse { get; set; }
         public Food food { get; set; }

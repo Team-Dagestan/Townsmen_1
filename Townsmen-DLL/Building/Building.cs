@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace DLL_Townsmen
 {
@@ -15,7 +16,9 @@ namespace DLL_Townsmen
         public string pathIMG;
         public int coord_X;
         public int coord_Y;
+        [XmlIgnore]
         public BuildingType buildingType;
+        [XmlIgnore]
         public Dictionary<ResourseType, int> BuildingPrice;
         public Building()
         {
