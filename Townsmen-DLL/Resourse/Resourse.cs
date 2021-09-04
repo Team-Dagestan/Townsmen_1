@@ -10,14 +10,12 @@ namespace DLL_Townsmen
     [Serializable]
     public class Resourse
     {
-        public string pathIMG;
         public int count;
         public int price;
         [XmlIgnore]
         public ResourseType resourseType;
         public Resourse()
         {
-            pathIMG = string.Empty;
             count = 0;
             price = 0;
         }

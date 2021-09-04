@@ -11,9 +11,9 @@ namespace DLL_Townsmen
     {
         public Hammer():base()
         {
-            pathIMG = string.Empty;
+            
             count = 0;
-            price = 0;
+            price = 15;
             resourseType = ResourseType.HAMMER;
         }
     }

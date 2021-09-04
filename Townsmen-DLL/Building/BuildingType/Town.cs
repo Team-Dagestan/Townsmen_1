@@ -12,13 +12,22 @@ namespace DLL_Townsmen
         public Town():base()
         {
             currentVillagers = 0;
-            maxVillagers = 0;
-            isPlace = true;
-            pathIMG = string.Empty;
-            coord_X = 0;
-            coord_Y = 0;
+            maxVillagers =new int[]{20,40,60};
+            isPlaced = true;
+            currentLevel = 0;
             buildingType = BuildingType.TOWNHALL;
-            BuildingPrice.Add(ResourseType.GOLD, 0);
+
+           // BuildingPrice[0].Add(ResourseType.GOLD, 0);
+          
+            BuildingPrice[0].Add(ResourseType.ROCK, 40);
+            BuildingPrice[0].Add(ResourseType.WOODENDECK, 40);
+            BuildingPrice[0].Add(ResourseType.HAMMER, 20);
+            BuildingPrice[0].Add(ResourseType.GOLD, 500);
+
+            BuildingPrice[1].Add(ResourseType.WOODENDECK, 80);
+            BuildingPrice[1].Add(ResourseType.HAMMER, 50);
+            BuildingPrice[1].Add(ResourseType.IRON, 50);
+            BuildingPrice[1].Add(ResourseType.GOLD, 900);
         }
     }
 }

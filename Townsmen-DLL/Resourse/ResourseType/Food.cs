@@ -11,9 +11,9 @@ namespace DLL_Townsmen
     {
         public Food():base()
         {
-            pathIMG = string.Empty;
+           
             count = 0;
-            price = 0;
+            price = 3;
             resourseType = ResourseType.FOOD;
         }
     }

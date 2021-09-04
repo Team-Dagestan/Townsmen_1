@@ -11,7 +11,7 @@ namespace DLL_Townsmen
     {
         public Gold():base()
         {
-            pathIMG = string.Empty;
+            
             count = 0;
             price = 0;
             resourseType = ResourseType.GOLD;

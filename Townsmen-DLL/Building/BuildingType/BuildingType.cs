@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DLL_Townsmen
 {
-     public enum BuildingType
+    [Serializable]
+    public enum BuildingType
     {
         SAWMILLHOUSE = 1,
         LUMBERJACKHOUSE = 2,

@@ -11,9 +11,9 @@ namespace DLL_Townsmen
     {
         public WoodenDeck():base()
         {
-            pathIMG = string.Empty;
+           
             count = 0;
-            price = 0;
+            price = 8;
             resourseType = ResourseType.WOODENDECK;
         }
     }

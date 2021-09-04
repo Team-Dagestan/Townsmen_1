@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace DLL_Townsmen
 {
-    public enum ResourseType
+    [Serializable]
+    public enum ResourseType : byte
     {
-        ROCK = 1,
-        WOOD = 2,
-        WOODENDECK = 3,
-        FOOD = 4,
-        IRONORE = 5,
-        IRON = 6,
-        GOLD = 7,
-        HAMMER = 8
+        ROCK = 0,
+        IRONORE = 1,
+        WOOD =2,
+        IRON = 3,
+        WOODENDECK = 4,
+        HAMMER = 5,
+        FOOD = 6,
+        GOLD = 7
     }
 }

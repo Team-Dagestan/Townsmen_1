@@ -11,9 +11,9 @@ namespace DLL_Townsmen
     {
         public IronOre():base()
         {
-            pathIMG = string.Empty;
+           
             count = 0;
-            price = 0;
+            price = 4;
             resourseType = ResourseType.IRONORE;
         }
     }
