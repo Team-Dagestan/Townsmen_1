@@ -1158,6 +1158,7 @@ namespace Project7
             }
             _spriteBatch.End();
 
+
             base.Draw(gameTime);
         }
     }
